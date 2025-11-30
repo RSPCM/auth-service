@@ -1,0 +1,47 @@
+services:
+  postgresql:
+    container_name: ms_postgres_db
+    image: postgres
+    environment:
+      POSTGRES_USER: asror
+      POSTGRES_PASSWORD: asror
+      POSTGRES_DB: rspcm
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  redis_db:
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+
+  activemq:
+    image: islandora/activemq:4
+    container_name: activemq
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+    environment:
+      ACTIVEMQ_USER: admin
+      ACTIVEMQ_PASSWORD: password
+      ACTIVEMQ_WEB_ADMIN_NAME: admin
+      ACTIVEMQ_WEB_ADMIN_PASSWORD: password
+      ACTIVEMQ_WEB_ADMIN_ROLES: admin
+    volumes:
+      - activemq:/opt/activemq/data
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+networks:
+  microservices-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  activemq:
