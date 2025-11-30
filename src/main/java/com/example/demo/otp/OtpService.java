@@ -22,14 +22,7 @@ public class OtpService {
     private final Random random = new Random();
     private final String VERIFICATION_MASSAGE = "Your verification code is: %d%n";
 
-    @Value("${spring.otp.retry-wait-time}")
-    private int retryWaitTime;
-
-    @Value("${spring.otp.retry-count}")
-    private int retryCount;
-
-    @Value("${spring.otp.time-to-live}")
-    private int timeToLive;
+    private final OtpProperties otpProperties;
 
     private final SmsNotificationService smsNotificationService;
 
@@ -49,29 +42,31 @@ public class OtpService {
         if (existingOtp.isEmpty()) {
             throw new EntityNotFoundException("Otp", phoneNumber);
         }
+
         Otp otp = existingOtp.orElseThrow(() -> new RuntimeException("We didnt send any verification"));
 
         if (otp.getCode() == validatePhoneNumberDTO.getOtp()) {
             otp.setVerified(true);
             otpRepository.save(otp);
             return new ApiMessageResponse("Otp was successfully verified");
-        } else
-            return new ApiMessageResponse("Otp was incorrect");
+        }
+
+        return new ApiMessageResponse("Otp was incorrect");
     }
 
     private ApiMessageResponse reTry(Otp otp) {
-        if (otp.getLastSendTime().plusSeconds(retryWaitTime).isAfter(LocalDateTime.now())) {
+        if (otp.getLastSendTime().plusSeconds(otpProperties.getRetryWaitTime()).isAfter(LocalDateTime.now())) {
             long resentTime = Duration.between(otp.getLastSendTime(), LocalDateTime.now()).getSeconds();
-            throw new OtpEarlyResentException(retryWaitTime - resentTime);
+            throw new OtpEarlyResentException(otpProperties.getRetryWaitTime() - resentTime);
         }
 
-        if (otp.getSendCount() >= retryCount) {
+        if (otp.getSendCount() >= otpProperties.getRetryCount()) {
             throw new OtpLimitExitedException(otp.getSendCount(),
-                    otp.getCreatedAt().plusSeconds(timeToLive));
+                    otp.getCreatedAt().plusSeconds(otpProperties.getTimeToLive()));
         }
 
-        Otp otp1 = sendSmsInternal(otp);
-        otpRepository.save(otp1);
+        otp = sendSmsInternal(otp);
+        otpRepository.save(otp);
 
         return new ApiMessageResponse("Sms was re-send successfully");
     }
