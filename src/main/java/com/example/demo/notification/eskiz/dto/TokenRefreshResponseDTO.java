@@ -1,4 +1,4 @@
-package com.example.demo.common.notification.eskiz.dto;
+package com.example.demo.notification.eskiz.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

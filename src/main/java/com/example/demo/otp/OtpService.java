@@ -1,12 +1,11 @@
 package com.example.demo.otp;
 
-import com.example.demo.common.notification.sms.SmsNotificationService;
 import com.example.demo.common.response.ApiMessageResponse;
 import com.example.demo.dto.request.ValidatePhoneNumberDTO;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.OtpEarlyResentException;
 import com.example.demo.exceptions.OtpLimitExitedException;
-import com.example.demo.otp.entity.Otp;
+import com.example.demo.notification.sms.SmsNotificationService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

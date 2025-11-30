@@ -1,13 +1,14 @@
-package com.example.demo.common.notification.sms;
+package com.example.demo.notification.sms;
 
-import com.example.demo.common.notification.eskiz.EskizFeignClient;
-import com.example.demo.common.notification.eskiz.dto.SendSmsRequestDTO;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.notification.eskiz.EskizFeignClient;
+import com.example.demo.notification.eskiz.dto.SendSmsRequestDTO;
 
 @Service
 @ConditionalOnProperty(name = "spring.profiles.active", havingValue = "production")

@@ -1,4 +1,4 @@
-package com.example.demo.otp.entity;
+package com.example.demo.otp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -3,8 +3,6 @@ package com.example.demo.otp;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.otp.entity.Otp;
-
 import java.util.Optional;
 
 @Repository

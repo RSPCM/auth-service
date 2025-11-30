@@ -1,4 +1,4 @@
-package com.example.demo.common.notification.sms;
+package com.example.demo.notification.sms;
 
 public interface SmsNotificationService {
 

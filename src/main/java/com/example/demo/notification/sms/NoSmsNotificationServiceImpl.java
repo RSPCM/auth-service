@@ -1,4 +1,4 @@
-package com.example.demo.common.notification.sms;
+package com.example.demo.notification.sms;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;

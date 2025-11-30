@@ -1,13 +1,14 @@
-package com.example.demo.common.notification.eskiz;
+package com.example.demo.notification.eskiz;
 
-import com.example.demo.common.notification.eskiz.dto.SendSmsRequestDTO;
-import com.example.demo.common.notification.eskiz.dto.TokenRefreshResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+
+import com.example.demo.notification.eskiz.dto.SendSmsRequestDTO;
+import com.example.demo.notification.eskiz.dto.TokenRefreshResponseDTO;
 
 @Component
 @FeignClient(name = "eskizFeignClient", url = "https://notify.eskiz.uz/api")
