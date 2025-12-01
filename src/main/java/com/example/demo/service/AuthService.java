@@ -46,7 +46,7 @@ public class AuthService {
     public UserResponseDto registerStudent(StudentSignUpDto signUpDto) {
         String phone = signUpDto.getPhoneNumber();
 
-        if (teacherRepository.findByPhoneNumber(phone).isPresent()) {
+        if (studentRepository.findByPhoneNumber(phone).isPresent()) {
             throw new AlreadyExistsException("User", "phone number", phone);
         }
 

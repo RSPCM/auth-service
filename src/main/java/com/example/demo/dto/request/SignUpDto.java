@@ -13,19 +13,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SignUpDto {
-    @NotBlank
+    @NotBlank(message = "First name cannot be blank")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "First name can only contain letters")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last name cannot be blank")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Last name can only contain letters")
     private String lastName;
 
-    @NotBlank
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Birth date cannot be blank")
     private LocalDate birthDate;
 
-    @NotBlank
-    @Pattern(regexp = "^\\+\\d{2} \\d{3}-\\d{2}-\\d{2}$")
+    @NotBlank(message = "Phone number cannot be blank")
+    @Pattern(regexp = "^\\+\\d{2} \\d{3}-\\d{2}-\\d{2}$", message = "Phone number must match pattern: +XX XXX-XX-XX")
     private String phoneNumber;
 }

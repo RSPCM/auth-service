@@ -8,7 +8,7 @@ import com.example.demo.common.response.ApiMessageResponse;
 import com.example.demo.dto.request.SignInDto;
 import com.example.demo.dto.request.SignUpDto;
 import com.example.demo.dto.request.StudentSignUpDto;
-import com.example.demo.dto.request.ValidatePhoneNumberDTO;
+import com.example.demo.dto.request.ValidatePhoneNumberDto;
 import com.example.demo.dto.response.TokenResponseDto;
 import com.example.demo.dto.response.UserResponseDto;
 import com.example.demo.otp.OtpService;
@@ -27,7 +27,7 @@ public class AuthController {
 
     @PostMapping("/validate")
     public ResponseEntity<ApiMessageResponse> validatePhoneNumber(
-            @Valid @RequestBody ValidatePhoneNumberDTO dto) {
+            @Valid @RequestBody ValidatePhoneNumberDto dto) {
         return ResponseEntity.ok(otpService.sendSms(dto));
     }
 
@@ -50,4 +50,5 @@ public class AuthController {
             @Valid @RequestBody SignInDto dto) {
         return ResponseEntity.ok(authService.login(dto));
     }
+
 }

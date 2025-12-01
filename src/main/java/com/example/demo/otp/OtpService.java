@@ -1,14 +1,13 @@
 package com.example.demo.otp;
 
 import com.example.demo.common.response.ApiMessageResponse;
-import com.example.demo.dto.request.ValidatePhoneNumberDTO;
+import com.example.demo.dto.request.ValidatePhoneNumberDto;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.OtpEarlyResentException;
 import com.example.demo.exceptions.OtpLimitExitedException;
 import com.example.demo.notification.sms.SmsNotificationService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -26,11 +25,11 @@ public class OtpService {
 
     private final SmsNotificationService smsNotificationService;
 
-    public ApiMessageResponse sendSms(ValidatePhoneNumberDTO validatePhoneNumberDTO) {
-        String phoneNumber = validatePhoneNumberDTO.getPhoneNumber();
+    public ApiMessageResponse sendSms(ValidatePhoneNumberDto validatePhoneNumberDto) {
+        String phoneNumber = validatePhoneNumberDto.getPhoneNumber();
         Optional<Otp> existingOtp = otpRepository.findByPhoneNumber(phoneNumber);
 
-        if (validatePhoneNumberDTO.getOtp() == null) {
+        if (validatePhoneNumberDto.getOtp() == null) {
             if (existingOtp.isPresent()) {
                 return reTry(existingOtp.get());
             }
@@ -45,7 +44,7 @@ public class OtpService {
 
         Otp otp = existingOtp.orElseThrow(() -> new RuntimeException("We didnt send any verification"));
 
-        if (otp.getCode() == validatePhoneNumberDTO.getOtp()) {
+        if (otp.getCode() == validatePhoneNumberDto.getOtp()) {
             otp.setVerified(true);
             otpRepository.save(otp);
             return new ApiMessageResponse("Otp was successfully verified");
