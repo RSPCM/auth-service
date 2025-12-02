@@ -1,3 +1,10 @@
 spring:
   profiles:
     active: local
+
+eureka:
+  instance:
+    hostname: auth-service
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
