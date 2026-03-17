@@ -1,13 +1,13 @@
 package com.example.authservice.service;
 
 import com.example.authservice.entity.User;
-import com.example.authservice.exceptions.ErrorCodes;
-import com.example.authservice.exceptions.entity.ErrorMessageException;
-import com.example.authservice.log.enums.AuditAction;
-import com.example.authservice.log.entity.AuditLog;
-import com.example.authservice.log.dto.AuditLogResponse;
-import com.example.authservice.log.RequestContext;
-import com.example.authservice.log.mapper.AuditLogMapper;
+import com.example.authservice.exception.ErrorCodes;
+import com.example.authservice.exception.entity.ErrorMessageException;
+import com.example.authservice.enums.AuditAction;
+import com.example.authservice.entity.AuditLog;
+import com.example.authservice.dto.response.AuditLogResponse;
+import com.example.authservice.util.RequestContext;
+import com.example.authservice.mapper.AuditLogMapper;
 import com.example.authservice.repository.AuditLogRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

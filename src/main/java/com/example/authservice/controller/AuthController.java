@@ -11,7 +11,7 @@ import com.example.authservice.dto.request.StudentSignUpDto;
 import com.example.authservice.dto.request.ValidatePhoneNumberDto;
 import com.example.authservice.dto.response.TokenResponseDto;
 import com.example.authservice.dto.response.UserResponseDto;
-import com.example.authservice.otp.OtpService;
+import com.example.authservice.service.OtpService;
 import com.example.authservice.service.AuthService;
 
 import jakarta.validation.Valid;

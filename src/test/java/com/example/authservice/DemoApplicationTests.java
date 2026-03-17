@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
-import com.example.authservice.otp.OtpRepository;
+import com.example.authservice.repository.OtpRepository;
 import org.mockito.Mockito;
 
 @SpringBootTest

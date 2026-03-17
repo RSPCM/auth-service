@@ -1,7 +1,7 @@
 package com.example.authservice.service;
 
-import com.example.authservice.exceptions.ErrorCodes;
-import com.example.authservice.exceptions.entity.ErrorMessageException;
+import com.example.authservice.exception.ErrorCodes;
+import com.example.authservice.exception.entity.ErrorMessageException;
 import com.example.authservice.enums.RoleName;
 import com.example.authservice.repository.RoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +15,8 @@ import com.example.authservice.dto.response.UserResponseDto;
 import com.example.authservice.entity.User;
 import com.example.authservice.entity.Role;
 import com.example.authservice.mapper.UserMapper;
-import com.example.authservice.otp.Otp;
-import com.example.authservice.otp.OtpRepository;
+import com.example.authservice.entity.Otp;
+import com.example.authservice.repository.OtpRepository;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.security.JwtService;
 

@@ -1,8 +1,8 @@
 package com.example.authservice.service;
 
 
-import com.example.authservice.exceptions.ErrorCodes;
-import com.example.authservice.exceptions.entity.ErrorMessageException;
+import com.example.authservice.exception.ErrorCodes;
+import com.example.authservice.exception.entity.ErrorMessageException;
 import com.example.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
