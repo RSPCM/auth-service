@@ -77,7 +77,6 @@ public class JwtService {
 
         claims.put("id", user.getId());
         claims.put("phone_number", user.getPhoneNumber());
-        claims.put("role", user.getRole().name());
 
         return claims;
 

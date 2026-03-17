@@ -2,9 +2,8 @@ package com.example.authservice.otp;
 
 import com.example.authservice.common.response.ApiMessageResponse;
 import com.example.authservice.dto.request.ValidatePhoneNumberDto;
-import com.example.authservice.exceptions.EntityNotFoundException;
-import com.example.authservice.exceptions.OtpEarlyResentException;
-import com.example.authservice.exceptions.OtpLimitExitedException;
+import com.example.authservice.exceptions.ErrorCodes;
+import com.example.authservice.exceptions.entity.ErrorMessageException;
 import com.example.authservice.notification.sms.SmsNotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ public class OtpService {
     private final String VERIFICATION_MASSAGE = "Your verification code is: %d%n";
 
     private final OtpProperties otpProperties;
-
     private final SmsNotificationService smsNotificationService;
 
     public ApiMessageResponse sendSms(ValidatePhoneNumberDto validatePhoneNumberDto) {
@@ -33,16 +31,17 @@ public class OtpService {
             if (existingOtp.isPresent()) {
                 return reTry(existingOtp.get());
             }
+
             Otp otp = sendSmsInternal(phoneNumber);
             otpRepository.save(otp);
             return new ApiMessageResponse("Sms was sent successfully");
         }
 
         if (existingOtp.isEmpty()) {
-            throw new EntityNotFoundException("Otp", phoneNumber);
+            throw new ErrorMessageException("Invalid or expired otp", ErrorCodes.BadRequest);
         }
 
-        Otp otp = existingOtp.orElseThrow(() -> new RuntimeException("We didnt send any verification"));
+        Otp otp = existingOtp.get();
 
         if (otp.getCode() == validatePhoneNumberDto.getOtp()) {
             otp.setVerified(true);
@@ -50,18 +49,20 @@ public class OtpService {
             return new ApiMessageResponse("Otp was successfully verified");
         }
 
-        return new ApiMessageResponse("Otp was incorrect");
+        throw new ErrorMessageException("Invalid or expired otp", ErrorCodes.BadRequest);
     }
 
     private ApiMessageResponse reTry(Otp otp) {
         if (otp.getLastSendTime().plusSeconds(otpProperties.getRetryWaitTime()).isAfter(LocalDateTime.now())) {
             long resentTime = Duration.between(otp.getLastSendTime(), LocalDateTime.now()).getSeconds();
-            throw new OtpEarlyResentException(otpProperties.getRetryWaitTime() - resentTime);
+            throw new ErrorMessageException("OTP was requested too recently. Please try after " + resentTime + " seconds", ErrorCodes.TooManyRequests);
         }
 
         if (otp.getSendCount() >= otpProperties.getRetryCount()) {
-            throw new OtpLimitExitedException(otp.getSendCount(),
-                    otp.getCreatedAt().plusSeconds(otpProperties.getTimeToLive()));
+            throw new ErrorMessageException(
+                    "OTP attempt limit exceeded " + otp.getSendCount() + ". Please try after " + otp.getCreatedAt().plusSeconds(otpProperties.getBlockDuration()),
+                    ErrorCodes.TooManyRequests
+            );
         }
 
         otp = sendSmsInternal(otp);

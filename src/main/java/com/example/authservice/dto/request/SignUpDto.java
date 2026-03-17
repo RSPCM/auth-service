@@ -21,6 +21,10 @@ public class SignUpDto {
     @Pattern(regexp = "^[A-Za-z]+$", message = "Last name can only contain letters")
     private String lastName;
 
+    @NotBlank(message = "Username cannot be blank")
+    @Pattern(regexp = "^[A-Za-z0-9]{3,20}$", message = "Username can only contain letters and digits, and must be between 3 and 20 characters long")
+    private String username;
+
     @NotBlank(message = "Password cannot be blank")
     private String password;
 

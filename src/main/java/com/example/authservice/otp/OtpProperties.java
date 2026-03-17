@@ -16,4 +16,6 @@ public class OtpProperties {
     private int retryCount;
 
     private int timeToLive;
+
+    private int blockDuration;
 }

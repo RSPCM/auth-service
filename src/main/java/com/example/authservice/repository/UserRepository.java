@@ -25,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             """, nativeQuery = true)
     Optional<User> findByPhoneNumber(String phoneNumber);
 
+    Optional<User> findByUsername(String username);
 }
 
 
