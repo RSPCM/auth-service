@@ -1,7 +1,7 @@
 package com.example.authservice.log;
 
 import com.example.authservice.log.entity.RequestAuditLog;
-import com.example.authservice.log.repository.RequestAuditLogRepository;
+import com.example.authservice.repository.RequestAuditLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

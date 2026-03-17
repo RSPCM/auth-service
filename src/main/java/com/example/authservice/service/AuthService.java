@@ -2,8 +2,8 @@ package com.example.authservice.service;
 
 import com.example.authservice.exceptions.ErrorCodes;
 import com.example.authservice.exceptions.entity.ErrorMessageException;
+import com.example.authservice.enums.RoleName;
 import com.example.authservice.repository.RoleRepository;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,6 @@ import com.example.authservice.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -38,7 +37,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    private final ApplicationEventPublisher eventPublisher;
 
     public UserResponseDto registerStudent(StudentSignUpDto signUpDto) {
         String phone = signUpDto.getPhoneNumber();
@@ -50,7 +48,8 @@ public class AuthService {
         }
 
         String password = passwordEncoder.encode(signUpDto.getPassword());
-        Role studentRole = roleRepository.findByName("ROLE_STUDENT");
+        Role studentRole = roleRepository.findByName(RoleName.ROLE_STUDENT)
+                .orElseThrow(() -> new ErrorMessageException("Role ROLE_STUDENT not found", ErrorCodes.InternalServerError));
 
         User user = User.builder()
                 .username(signUpDto.getUsername())
@@ -79,11 +78,17 @@ public class AuthService {
 
         String password = passwordEncoder.encode(signUpDto.getPassword());
 
-        User user = new User(
-                username,
-                password,
-                phone,
-                Role.TEACHER);
+        Role teacherRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
+                .orElseThrow(() -> new ErrorMessageException("Role ROLE_TEACHER not found", ErrorCodes.InternalServerError));
+
+        User user = User.builder()
+                .username(username)
+                .password(password)
+                .phoneNumber(phone)
+                .roles(Set.of(teacherRole))
+                .build();
+
+        repository.save(user);
 
         return mapper.toResponseDto(user);
     }
