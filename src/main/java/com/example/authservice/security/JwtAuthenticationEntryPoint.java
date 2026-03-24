@@ -18,10 +18,14 @@ import java.util.Map;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException authException) throws IOException {
+
         log.error("Unauthorized error: {}", authException.getMessage());
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         String message = authException.getCause() != null ? authException.getCause().getMessage() : authException.getMessage();

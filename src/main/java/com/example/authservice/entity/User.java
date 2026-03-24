@@ -23,13 +23,13 @@ public class User extends BaseScale implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
+
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
-    private String phoneNumber;
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,9 +39,13 @@ public class User extends BaseScale implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (roles == null || roles.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName().name()));
         }
 
         return authorities;

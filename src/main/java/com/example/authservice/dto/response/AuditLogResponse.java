@@ -13,16 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class AuditLogResponse {
 
-    private Long reqLogId;
     private String requestId;
-    private String httpMethod;
-    private String requestUri;
-    private String queryString;
-    private String remoteAddress;
-    private String userAgent;
-    private Integer responseStatus;
-    private Long durationMs;
-    private LocalDateTime requestTime;
+    private String serviceName;
 
     private UUID auditLogId;
     private String entityType;

@@ -1,12 +1,8 @@
 spring:
-  application:
-    name: auth-service
-
-
   datasource:
-    url: jdbc:postgresql://46.101.224.6:5432/rspcm
-    username: endragon
-    password: 3875671
+    url: jdbc:postgresql://161.35.72.98:5432/rspcm
+    username: user
+    password: password
 
   jpa:
     show-sql: true
@@ -14,9 +10,9 @@ spring:
       ddl-auto: update
 
   rabbitmq:
-    username: endragon
-    password: 3875671
-    host: 46.101.224.6
+    username: admin
+    password: admin
+    host: 161.35.72.98
     port: 5672
     listener:
       simple:
@@ -28,10 +24,9 @@ spring:
           multiplier: 2
   data:
     redis:
-      host: 46.101.224.6
+      host: 161.35.72.98
       port: 6379
-      password: 3875671
-
+      password: password
 
   springdoc:
     api-docs:
@@ -55,8 +50,9 @@ eureka:
     hostname: auth-service
 
   client:
+    enabled: ${EUREKA_CLIENT_ENABLED:false}
     service-url:
-      defaultZone: http://167.71.34.190:8761/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka}
 
 otp:
   retry-wait-time: 60
@@ -71,3 +67,12 @@ notification:
 token:
   expiration: 86400
   token: nC1zvT1QWqD7jVqz9Z2Dq9cF4o3j1+gZB6gXx8Llx9A=
+
+outbox:
+  publisher:
+    enabled: true
+    fixed-delay-ms: 5000
+    batch-size: 50
+    max-attempts: 10
+    retry-delay-seconds: 30
+

@@ -16,16 +16,8 @@ public class AuditLogMapper {
 
     public AuditLogResponse toResponse(AuditLogProjection projection) {
         return AuditLogResponse.builder()
-                .reqLogId(projection.getReqLogId())
                 .requestId(projection.getRequestId())
-                .httpMethod(projection.getHttpMethod())
-                .requestUri(projection.getRequestUri())
-                .queryString(projection.getQueryString())
-                .remoteAddress(projection.getRemoteAddress())
-                .userAgent(projection.getUserAgent())
-                .responseStatus(projection.getResponseStatus())
-                .durationMs(projection.getDurationMs())
-                .requestTime(projection.getRequestTime())
+                .serviceName(projection.getServiceName())
                 .auditLogId(projection.getAuditLogId())
                 .entityType(projection.getEntityType())
                 .entityId(projection.getEntityId())

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.authservice.common.response.ApiMessageResponse;
 import com.example.authservice.dto.request.SignInDto;
-import com.example.authservice.dto.request.SignUpDto;
 import com.example.authservice.dto.request.StudentSignUpDto;
+import com.example.authservice.dto.request.TeacherSignUpDto;
 import com.example.authservice.dto.request.ValidatePhoneNumberDto;
 import com.example.authservice.dto.response.TokenResponseDto;
 import com.example.authservice.dto.response.UserResponseDto;
@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/teacher/register")
     public ResponseEntity<UserResponseDto> registerTeacher(
-            @Valid @RequestBody SignUpDto dto) {
+            @Valid @RequestBody TeacherSignUpDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(authService.registerTeacher(dto));
     }

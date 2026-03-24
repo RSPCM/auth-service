@@ -22,11 +22,15 @@ public class AuditLog extends BaseScale {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String requestId;
+    private UUID requestId;
 
     // User
     private UUID userId;
     private String username;
+
+    // Service Info
+    @Column(name = "service_name", nullable = false)
+    private String serviceName;
 
     // Entity Info
     private String entityType;

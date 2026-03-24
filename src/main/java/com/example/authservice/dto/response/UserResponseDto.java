@@ -1,6 +1,7 @@
 package com.example.authservice.dto.response;
 
-import java.time.LocalDate;
+import java.util.Set;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserResponseDto {
+    private UUID id;
+
     private String username;
 
-    private String firstName;
-
-    private String lastName;
-
-    private LocalDate birthDate;
-
     private String phoneNumber;
+
+    private Set<String> roles;
 }

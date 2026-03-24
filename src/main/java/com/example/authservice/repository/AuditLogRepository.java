@@ -16,63 +16,44 @@ import java.util.UUID;
 public interface AuditLogRepository extends JpaRepository<AuditLog, UUID> {
 
     @Query(value = """
-            select rl.id               AS req_log_id,
-                   rl.request_id,
-                   rl.http_method,
-                   rl.request_uri,
-                   rl.query_string,
-                   rl.remote_address,
-                   rl.user_agent,
-                   rl.response_status,
-                   rl.duration_ms,
-                   rl.datetime_created AS request_time,
-            
-                   al.id               AS audit_log_id,
-                   al.entity_type,
-                   al.entity_id,
-                   al.action,
-                   al.diff_json,
-                   al.datetime_created AS audit_time,
-            
-                   al.user_id,
-                   al.username
-            
-            from request_audit_log rl
-                     inner join audit_log al on rl.request_id = al.request_id
-            where (cast(:from as timestamp) is null or rl.datetime_created >= cast(:from as timestamp))
-              and (cast(:to as timestamp) is null or rl.datetime_created <= cast(:to as timestamp))
+            select al.id               AS auditLogId,
+                   al.request_id       AS requestId,
+                   al.service_name     AS serviceName,
+                   al.entity_type      AS entityType,
+                   al.entity_id        AS entityId,
+                   al.action           AS action,
+                   al.diff_json        AS diffJson,
+                   al.datetime_created AS auditTime,
+
+                   al.user_id          AS userId,
+                   al.username         AS username
+
+            from audit_log al
+            where (cast(:from as timestamp) is null or al.datetime_created >= cast(:from as timestamp))
+              and (cast(:to as timestamp) is null or al.datetime_created <= cast(:to as timestamp))
               and (:query is null or :query = ''
                 or al.username ilike concat('%', :query, '%')
                 or cast(al.user_id as varchar) ilike concat('%', :query, '%')
                 or al.action ilike concat('%', :query, '%')
+                or al.service_name ilike concat('%', :query, '%')
                 or al.entity_type ilike concat('%', :query, '%')
-                or rl.http_method ilike concat('%', :query, '%')
-                or rl.request_uri ilike concat('%', :query, '%')
-                or rl.query_string ilike concat('%', :query, '%')
-                or rl.remote_address ilike concat('%', :query, '%')
-                or rl.user_agent ilike concat('%', :query, '%')
-                or cast(rl.response_status as varchar) ilike concat('%', :query, '%')
-                or cast(rl.duration_ms as varchar) ilike concat('%', :query, '%'))
-            order by rl.datetime_created desc
+                or al.entity_id ilike concat('%', :query, '%')
+                or al.request_id ilike concat('%', :query, '%'))
+            order by al.datetime_created desc
             """,
             countQuery = """
-                    select count(rl.*)
-                    from request_audit_log rl
-                             inner join audit_log al on rl.request_id = al.request_id
-                    where (cast(:from as timestamp) is null or rl.datetime_created >= cast(:from as timestamp))
-                      and (cast(:to as timestamp) is null or rl.datetime_created <= cast(:to as timestamp))
+                    select count(*)
+                    from audit_log al
+                    where (cast(:from as timestamp) is null or al.datetime_created >= cast(:from as timestamp))
+                      and (cast(:to as timestamp) is null or al.datetime_created <= cast(:to as timestamp))
                       and (:query is null or :query = ''
                         or al.username ilike concat('%', :query, '%')
                         or cast(al.user_id as varchar) ilike concat('%', :query, '%')
                         or al.action ilike concat('%', :query, '%')
+                        or al.service_name ilike concat('%', :query, '%')
                         or al.entity_type ilike concat('%', :query, '%')
-                        or rl.http_method ilike concat('%', :query, '%')
-                        or rl.request_uri ilike concat('%', :query, '%')
-                        or rl.query_string ilike concat('%', :query, '%')
-                        or rl.remote_address ilike concat('%', :query, '%')
-                        or rl.user_agent ilike concat('%', :query, '%')
-                        or cast(rl.response_status as varchar) ilike concat('%', :query, '%')
-                        or cast(rl.duration_ms as varchar) ilike concat('%', :query, '%'))
+                        or al.entity_id ilike concat('%', :query, '%')
+                        or al.request_id ilike concat('%', :query, '%'))
                     """,
             nativeQuery = true)
     Page<AuditLogProjection> getAllLogWithFilter(

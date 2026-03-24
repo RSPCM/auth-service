@@ -11,7 +11,7 @@ import org.mockito.Mockito;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class DemoApplicationTests {
+class AuthApplicationTests {
 
 	@Test
 	void contextLoads() {

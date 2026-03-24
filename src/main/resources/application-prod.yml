@@ -1,5 +1,4 @@
 spring:
-
   datasource:
     url: jdbc:postgresql://46.101.224.6:5432/rspcm
     username: endragon
@@ -42,8 +41,9 @@ spring:
     instance:
       hostname: auth-service
     client:
+      enabled: ${EUREKA_CLIENT_ENABLED:true}
       service-url:
-        defaultZone: http://167.71.34.190.6:8761/eureka/
+        defaultZone: http://167.71.34.190:8761/eureka/
 
 otp:
   retry-wait-time: 60
@@ -58,3 +58,12 @@ notification:
 token:
   expiration: 86400
   token: nC1zvT1QWqD7jVqz9Z2Dq9cF4o3j1+gZB6gXx8Llx9A=
+
+outbox:
+  publisher:
+    enabled: true
+    fixed-delay-ms: 5000
+    batch-size: 100
+    max-attempts: 20
+    retry-delay-seconds: 30
+

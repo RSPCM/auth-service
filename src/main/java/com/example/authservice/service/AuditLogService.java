@@ -6,7 +6,6 @@ import com.example.authservice.exception.entity.ErrorMessageException;
 import com.example.authservice.enums.AuditAction;
 import com.example.authservice.entity.AuditLog;
 import com.example.authservice.dto.response.AuditLogResponse;
-import com.example.authservice.util.RequestContext;
 import com.example.authservice.mapper.AuditLogMapper;
 import com.example.authservice.repository.AuditLogRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.example.authservice.util.SpringSecurityUtil.getCurrentUser;
 
@@ -37,8 +34,11 @@ public class AuditLogService {
     private final AuditLogRepository auditLogRepository;
     private final ObjectMapper objectMapper;
     private final AuditLogMapper auditLogMapper;
+    @Value("${spring.application.name:unknown-service}")
+    private String serviceName;
 
     public void log(
+            UUID requestId,
             Object entity,
             AuditAction action,
             Object beforeObj,
@@ -54,9 +54,10 @@ public class AuditLogService {
         JsonNode diffJson = generateDiff(beforeJson, afterJson);
 
         AuditLog auditLog = AuditLog.builder()
-                .requestId(RequestContext.getRequestId())
+                .requestId(requestId)
                 .userId(currentUser != null ? currentUser.getId() : null)
                 .username(currentUser != null ? currentUser.getUsername() : null)
+                .serviceName(serviceName)
                 .entityType(entityType)
                 .entityId(entityId)
                 .action(action)

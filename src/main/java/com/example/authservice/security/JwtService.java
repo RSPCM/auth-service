@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,7 @@ public class JwtService {
 
         return Jwts.builder()
                 .claims(extraClaims)
-                .subject(user.getPhoneNumber())
+                .subject(user.getUsername())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiration))
                 .signWith(signingKey())
@@ -76,7 +77,9 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("id", user.getId());
-        claims.put("phone_number", user.getPhoneNumber());
+        claims.put("roles", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
 
         return claims;
 
