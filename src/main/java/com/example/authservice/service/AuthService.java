@@ -47,11 +47,11 @@ public class AuthService {
         // TODO: check group exists or not
         // TODO: even driven architecture: send request to student service to save student
         if (repository.findByPhoneNumber(phone).isPresent()) {
-            throw new ErrorMessageException("User with phone number: " + phone, ErrorCodes.AlreadyExists);
+            throw new ErrorMessageException("This phone number: %s is already registered".formatted(phone), ErrorCodes.AlreadyExists);
         }
 
         if (repository.findByUsername(username).isPresent()) {
-            throw new ErrorMessageException("User with username: " + username, ErrorCodes.AlreadyExists);
+            throw new ErrorMessageException("This username: %s is already taken".formatted(username), ErrorCodes.AlreadyExists);
         }
 
         String password = passwordEncoder.encode(signUpDto.getPassword());
@@ -79,11 +79,11 @@ public class AuthService {
 
         // TODO: even driven architecture: send request to student service to save teacher
         if (repository.findByPhoneNumber(phone).isPresent()) {
-            throw new ErrorMessageException("User with phone number: %s already exists".formatted(phone), ErrorCodes.AlreadyExists);
+            throw new ErrorMessageException("This phone number: %s is already registered".formatted(phone), ErrorCodes.AlreadyExists);
         }
 
         if (repository.findByUsername(username).isPresent()) {
-            throw new ErrorMessageException("User with username: %s already exists".formatted(username), ErrorCodes.AlreadyExists);
+            throw new ErrorMessageException("This username: %s is already taken".formatted(username), ErrorCodes.AlreadyExists);
         }
 
         String password = passwordEncoder.encode(signUpDto.getPassword());

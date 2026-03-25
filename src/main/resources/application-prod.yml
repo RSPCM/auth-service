@@ -38,10 +38,7 @@ spring:
         show-details: always
 
   eureka:
-    instance:
-      hostname: auth-service
     client:
-      enabled: ${EUREKA_CLIENT_ENABLED:true}
       service-url:
         defaultZone: http://167.71.34.190:8761/eureka/
 
