@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://161.35.72.98:5432/rspcm
+    url: jdbc:postgresql://161.35.72.98:5432/auth
     username: user
     password: password
 
@@ -19,9 +19,9 @@ spring:
         retry:
           enabled: true
           initial-interval: 1000ms
-          max-attempts: 3
           max-interval: 10000ms
           multiplier: 2
+          max-retries: 3
   data:
     redis:
       host: 161.35.72.98

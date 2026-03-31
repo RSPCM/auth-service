@@ -13,16 +13,5 @@ import lombok.Setter;
 @Setter
 public class TeacherSignUpDto extends SignUpDto {
 
-    @NotBlank(message = "First name cannot be blank")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "First name can only contain letters")
-    private String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Last name can only contain letters")
-    private String lastName;
-
-    @NotNull(message = "Birth date cannot be blank")
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate birthDate;
 }
 

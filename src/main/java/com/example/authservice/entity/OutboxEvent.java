@@ -1,4 +1,5 @@
 package com.example.authservice.entity;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 import com.example.authservice.enums.OutboxStatus;
@@ -26,24 +27,34 @@ public class OutboxEvent extends BaseScale {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(nullable = false, length = 100)
     private String eventType;
+
     @Column(nullable = false)
     private String aggregateId;
+
     @Column(nullable = false)
     private String exchangeName;
+
     @Column(nullable = false)
     private String routingKey;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String payload;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private OutboxStatus status;
+
     @Column(nullable = false)
     private Integer attempts;
+
     @Column(nullable = false)
     private LocalDateTime nextAttemptAt;
+
     @Column(columnDefinition = "TEXT")
     private String lastError;
+
     private LocalDateTime publishedAt;
 }

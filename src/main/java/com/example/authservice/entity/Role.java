@@ -20,8 +20,4 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private RoleName name;
-
-    public Role(RoleName name) {
-        this.name = name;
-    }
 }

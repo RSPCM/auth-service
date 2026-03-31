@@ -61,6 +61,6 @@ outbox:
     enabled: true
     fixed-delay-ms: 5000
     batch-size: 100
-    max-attempts: 20
+    max-attempts: 5
     retry-delay-seconds: 30
 

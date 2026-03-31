@@ -1,5 +1,6 @@
 package com.example.authservice.dto.message;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeacherProfileCreateMessage {
+public class TeacherProfileCreateMessage implements Serializable {
     private UUID authUserId;
     private String username;
     private String phoneNumber;

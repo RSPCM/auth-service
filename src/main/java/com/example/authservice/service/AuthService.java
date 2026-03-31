@@ -45,23 +45,18 @@ public class AuthService {
         String username = signUpDto.getUsername();
 
         // TODO: check group exists or not
-        // TODO: even driven architecture: send request to student service to save student
-        if (repository.findByPhoneNumber(phone).isPresent()) {
-            throw new ErrorMessageException("This phone number: %s is already registered".formatted(phone), ErrorCodes.AlreadyExists);
-        }
+        // TODO: even driven architecture: send request to student service to save studentz
+        validateSignUpDto(phone, username);
 
-        if (repository.findByUsername(username).isPresent()) {
-            throw new ErrorMessageException("This username: %s is already taken".formatted(username), ErrorCodes.AlreadyExists);
-        }
+        isPhoneNumberVerified(phone);
 
-        String password = passwordEncoder.encode(signUpDto.getPassword());
         Role studentRole = roleRepository.findByName(RoleName.ROLE_STUDENT)
                 .orElseThrow(() -> new ErrorMessageException("Role STUDENT not found", ErrorCodes.InternalServerError));
 
         User user = User.builder()
                 .username(username)
                 .phoneNumber(signUpDto.getPhoneNumber())
-                .password(password)
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
                 .roles(Set.of(studentRole))
                 .build();
 
@@ -75,18 +70,11 @@ public class AuthService {
         String phone = signUpDto.getPhoneNumber();
         String username = signUpDto.getUsername();
 
-        isPhoneNumberVerified(phone);
 
         // TODO: even driven architecture: send request to student service to save teacher
-        if (repository.findByPhoneNumber(phone).isPresent()) {
-            throw new ErrorMessageException("This phone number: %s is already registered".formatted(phone), ErrorCodes.AlreadyExists);
-        }
+        validateSignUpDto(phone, username);
 
-        if (repository.findByUsername(username).isPresent()) {
-            throw new ErrorMessageException("This username: %s is already taken".formatted(username), ErrorCodes.AlreadyExists);
-        }
-
-        String password = passwordEncoder.encode(signUpDto.getPassword());
+        isPhoneNumberVerified(phone);
 
         Role teacherRole = roleRepository.findByName(RoleName.ROLE_TEACHER)
                 .orElseThrow(() -> new ErrorMessageException("Role TEACHER not found", ErrorCodes.InternalServerError));
@@ -94,9 +82,10 @@ public class AuthService {
         User user = User.builder()
                 .username(username)
                 .phoneNumber(phone)
-                .password(password)
+                .password(passwordEncoder.encode(signUpDto.getPassword()))
                 .roles(Set.of(teacherRole))
                 .build();
+
         User savedUser = repository.save(user);
 
         TeacherProfileCreateMessage teacherProfileCreateMessage = TeacherProfileCreateMessage.builder()
@@ -111,6 +100,16 @@ public class AuthService {
         outboxService.enqueueTeacherProfileCreate(teacherProfileCreateMessage);
 
         return mapper.toResponseDto(savedUser);
+    }
+
+    private void validateSignUpDto(String phone, String username) {
+        if (repository.findByPhoneNumber(phone).isPresent()) {
+            throw new ErrorMessageException("This phone number: %s is already registered".formatted(phone), ErrorCodes.AlreadyExists);
+        }
+
+        if (repository.findByUsername(username).isPresent()) {
+            throw new ErrorMessageException("This username: %s is already taken".formatted(username), ErrorCodes.AlreadyExists);
+        }
     }
 
     private void isPhoneNumberVerified(String phoneNumber) {

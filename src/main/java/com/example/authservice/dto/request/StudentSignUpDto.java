@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentSignUpDto extends SignUpDto {
+
     @NotNull
     private UUID groupId;
 }

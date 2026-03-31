@@ -10,6 +10,7 @@ import com.example.authservice.repository.OtpRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -39,9 +40,8 @@ public class OtpService {
             return new ApiMessageResponse("Sms was sent successfully");
         }
 
-        if (existingOtp.isEmpty()) {
+        if (existingOtp.isEmpty())
             throw new ErrorMessageException("Invalid or expired otp", ErrorCodes.BadRequest);
-        }
 
         Otp otp = existingOtp.get();
 

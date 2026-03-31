@@ -34,7 +34,7 @@ public class OutboxService {
     @Value("${outbox.publisher.batch-size:50}")
     private int batchSize;
 
-    @Value("${outbox.publisher.max-attempts:10}")
+    @Value("${outbox.publisher.max-attempts:5}")
     private int maxAttempts;
 
     @Value("${outbox.publisher.retry-delay-seconds:30}")
