@@ -19,9 +19,9 @@ spring:
         retry:
           enabled: true
           initial-interval: 1000ms
-          max-attempts: 3
           max-interval: 10000ms
           multiplier: 2
+          max-retries: 3
 
   springdoc:
     api-docs:

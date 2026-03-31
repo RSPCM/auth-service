@@ -2,7 +2,6 @@ package com.example.authservice.entity;
 
 import com.example.authservice.enums.RoleName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
